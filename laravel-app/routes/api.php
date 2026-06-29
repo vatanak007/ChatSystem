@@ -1,9 +1,23 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\AuthController;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/signin', [AuthController::class, 'signin']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/signout', [AuthController::class, 'signout']);
+    Route::get('/verify', [AuthController::class, 'verify']);
+});
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,7 +30,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
-        );
+        //
     })->create();
+
