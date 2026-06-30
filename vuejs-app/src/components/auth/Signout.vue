@@ -1,5 +1,5 @@
 <template>
-  <h1>Signout</h1>
+  <h1>Yoo! You are signing out.</h1>
 </template>
 
 <script setup></script>
